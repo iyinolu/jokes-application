@@ -6,7 +6,7 @@ interface BaseLayoutProps {
 const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
   return (
     <React.Fragment>
-      <main className="container">{children}</main>
+      <div className="container">{children}</div>
     </React.Fragment>
   );
 };

@@ -1,0 +1,26 @@
+.joke-card {
+    max-width: 600px;
+    border-radius: 8px;
+    padding: 19px 30px;
+    height: 1px;
+    background-color: $secondary;
+    margin: 0 auto;
+    min-height: 200px;
+
+    &-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    &-top {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &-bottom {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+    }
+}
