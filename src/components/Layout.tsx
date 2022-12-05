@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+interface BaseLayoutProps {
+  children: ReactNode;
+}
 
-const BaseLayout: React.FC = () => {
+const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
   return (
     <React.Fragment>
-      <main className="container"></main>
+      <main className="container">{children}</main>
     </React.Fragment>
   );
 };

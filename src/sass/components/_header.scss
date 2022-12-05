@@ -1,0 +1,29 @@
+.header {
+    display: flex;
+    min-height: 70px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    &-brand {
+        font-size: 19px;
+    }
+
+    &-nav-container {
+        display: flex;
+    }
+
+    &-nav {
+        & li {
+            display: flex;
+            align-items: center;
+            padding: 8px 14px;
+            background: $primary;
+            color: white;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    }
+}
