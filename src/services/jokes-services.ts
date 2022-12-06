@@ -9,11 +9,14 @@ export interface SuccessResponse {
   date: string;
   categories: string[];
 }
+export interface CategoryResponse {
+  categories: string[];
+}
 
-const getRandomJoke = async () => {
+const getRandomJoke = async (selectedCategory: string | undefined) => {
   return new Promise<SuccessResponse>((resolve, reject) => {
     axios
-      .get(constants.RANDOM_JOKE)
+      .get(constants.RANDOM_JOKE(selectedCategory))
       .then((res) => {
         const _updatedAt = new Date(res.data.updated_at);
         const _date = `${_updatedAt.getDay() + 1}${dateNameString(
@@ -38,4 +41,21 @@ const getRandomJoke = async () => {
   });
 };
 
-export default { getRandomJoke };
+const getJokeCategories = async () => {
+  return new Promise<CategoryResponse>((resolve, reject) => {
+    axios
+      .get(constants.JOKE_CATEGORIES)
+      .then((res) => {
+        resolve({
+          categories: res.data,
+        });
+      })
+      .catch((err) => {
+        reject({
+          error: err,
+        });
+      });
+  });
+};
+
+export default { getRandomJoke, getJokeCategories };

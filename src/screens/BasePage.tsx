@@ -9,6 +9,7 @@ import { toAbsoluteUrl } from '../utils';
 import { useJokesCache } from '../hooks/useJokesCache';
 import { storageService } from '../services/localstorage-service';
 import SelectField from '../components/SelectField';
+import { JokeOptions } from '../components/SelectField';
 
 function SPA() {
   const [currentJoke, setCurrentJoke] = useState<SuccessResponse>({
@@ -18,28 +19,61 @@ function SPA() {
     image: '',
     joke: '',
   });
+  const [jokeCategories, setJokeCategories] = useState<JokeOptions[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | undefined
+  >();
+
   const {
     cacheAJoke,
     getPrevCachedJoke,
     getNextCachedJoke,
     cacheStatus,
     getExactCachedJoke,
+    resetCache,
   } = useJokesCache();
+
+  useEffect(() => {
+    if (selectedCategory) {
+      loadRandomJoke();
+    }
+  }, [selectedCategory]);
 
   const loadRandomJoke = useCallback(() => {
     jokesServices
-      .getRandomJoke()
+      .getRandomJoke(selectedCategory)
       .then((res) => {
         setCurrentJoke(res);
         cacheAJoke(res);
       })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((err) => {
-        console.log(err);
+        // TODO: Log & handle error
+      });
+  }, [selectedCategory]);
+
+  const lookupCategories = useCallback(() => {
+    jokesServices
+      .getJokeCategories()
+      .then((res) => {
+        const _options = res.categories.map((option) => {
+          return {
+            value: option,
+            label: `${option[0].toUpperCase()}${option.slice(1)}`,
+          };
+        });
+        setJokeCategories(_options);
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .catch((err) => {
+        // TODO: Log & handle error
       });
   }, []);
 
   useEffect(() => {
-    storageService.get('__jokes')?.latestIndex
+    lookupCategories();
+    storageService.get('__jokes')?.latestIndex &&
+    storageService.get('__jokes')?.jokeStack
       ? setCurrentJoke(getExactCachedJoke())
       : loadRandomJoke();
   }, []);
@@ -50,6 +84,11 @@ function SPA() {
 
   const onPrev = () => {
     cacheStatus.prev && setCurrentJoke(getPrevCachedJoke());
+  };
+
+  const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e?.target?.value ?? undefined);
+    resetCache();
   };
 
   return (
@@ -66,11 +105,15 @@ function SPA() {
               />
             </div>
             <div className="app-toolbar-left">
-              <SelectField placeholder="Choose Joke Category" />
+              <SelectField
+                placeholder="Choose Joke Category"
+                options={jokeCategories}
+                onChange={onChangeCategory}
+              />
             </div>
           </div>
           <JokePreviewCard
-            category={currentJoke.categories}
+            category={currentJoke?.categories}
             content={currentJoke.joke}
             datePosted={currentJoke.date}
             image={currentJoke.image}

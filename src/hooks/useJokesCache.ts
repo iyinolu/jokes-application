@@ -3,6 +3,10 @@ import { SuccessResponse } from '../services/jokes-services';
 import { storageService } from '../services/localstorage-service';
 
 export const useJokesCache = () => {
+  const [storageState, setStorageState] = useState(
+    storageService.get('__jokes')
+  );
+
   const [currentIndex, setCurrentIndex] = useState<number>(
     storageService.get('__jokes')?.latestIndex ?? -1
   );
@@ -13,6 +17,10 @@ export const useJokesCache = () => {
   });
 
   useEffect(() => {
+    if (currentIndex === -1) {
+      setCacheStatus({ next: false, prev: false });
+      return;
+    }
     if (currentIndex <= 0) {
       setCacheStatus((_state) => {
         return { ..._state, prev: false };
@@ -23,7 +31,7 @@ export const useJokesCache = () => {
       });
     }
 
-    if (currentIndex === storageService.get('__jokes')?.jokeStack.length - 1) {
+    if (currentIndex === storageState?.jokeStack?.length - 1) {
       setCacheStatus((_state) => {
         return { ..._state, next: false };
       });
@@ -41,39 +49,47 @@ export const useJokesCache = () => {
     } else {
       _currentJokes.jokeStack.push(joke);
     }
-    storageService.set('__jokes', {
+    const _data = {
       ..._currentJokes,
       latestIndex: _currentJokes.jokeStack.length - 1,
-    });
+    };
+    setStorageState(_data);
+    storageService.set('__jokes', _data);
     setCurrentIndex((state) => state + 1);
   };
 
   const getPrevCachedJoke = () => {
-    const _jokeStack = storageService.get('__jokes');
     if (cacheStatus.prev) {
       const _index = currentIndex - 1;
       setCurrentIndex((state) => state - 1);
-      // Keep track of current index incase of page reload.
-      storageService.set('__jokes', { ..._jokeStack, latestIndex: _index });
-      const result = storageService.get('__jokes').jokeStack[_index];
-      return result;
+      return updateStorage(_index);
     }
   };
 
   const getNextCachedJoke = () => {
-    const _jokeStack = storageService.get('__jokes');
     if (cacheStatus.next) {
       const _index = currentIndex + 1;
       setCurrentIndex((state) => state + 1);
-      // Keep track of current index incase of page reload.
-      storageService.set('__jokes', { ..._jokeStack, latestIndex: _index });
-      const result = storageService.get('__jokes').jokeStack[_index];
-      return result;
+      return updateStorage(_index);
     }
   };
 
+  const updateStorage = (latestIndex: number) => {
+    const _data = { ...storageState, latestIndex: latestIndex };
+    setStorageState(_data);
+    storageService.set('__jokes', _data);
+    const result = storageState.jokeStack[latestIndex];
+    return result;
+  };
+
   const getExactCachedJoke = () => {
-    return storageService.get('__jokes').jokeStack[currentIndex];
+    return storageState.jokeStack && storageState.jokeStack[currentIndex];
+  };
+
+  const resetCache = () => {
+    setCacheStatus({ next: false, prev: false });
+    setCurrentIndex(-1);
+    storageService.removeData('__jokes');
   };
 
   return {
@@ -82,5 +98,6 @@ export const useJokesCache = () => {
     getNextCachedJoke,
     cacheStatus,
     getExactCachedJoke,
+    resetCache,
   };
 };

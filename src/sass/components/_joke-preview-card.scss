@@ -34,3 +34,16 @@
         padding-top: 37px;
     }
 }
+
+.category-tag {
+    display: flex;
+    padding: 5px 9px;
+    border-radius: 5px;
+    background: rgba($color: $primary, $alpha: 0.2);
+    margin: 0 3px;
+
+    & p {
+        color: $primary;
+        font-weight: 600;
+    }
+}
