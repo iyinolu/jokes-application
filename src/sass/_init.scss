@@ -3,6 +3,8 @@
 @import "components/header";
 @import "components/joke-preview-card";
 @import "components/common";
+@import "components/textfield";
+@import "components/selectfield";
 @import "variables";
 
 * {
@@ -14,4 +16,16 @@
 ul,
 ol {
     list-style: none;
+}
+
+button {
+    background: none;
+    border: none;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: "";
 }

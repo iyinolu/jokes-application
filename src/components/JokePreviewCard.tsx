@@ -1,5 +1,4 @@
 import React from 'react';
-
 interface JokePreviewCardInterfaces {
   content: string;
   image?: string;
@@ -9,7 +8,6 @@ interface JokePreviewCardInterfaces {
 
 const JokePreviewCard: React.FC<JokePreviewCardInterfaces> = ({
   content,
-  image,
   category,
   datePosted,
 }) => {
@@ -17,8 +15,8 @@ const JokePreviewCard: React.FC<JokePreviewCardInterfaces> = ({
     <div className="joke-card">
       <div className="joke-card-container">
         <div className="joke-card-top">
-          <div>{content}</div>
-          <div>{image ? <img src={image} /> : ''}</div>
+          <div className="joke-card-content">{content}</div>
+          {/* <div>{image ? <img src={image} /> : ''}</div> */}
         </div>
         <div className="joke-card-bottom">
           <div>{datePosted}</div>

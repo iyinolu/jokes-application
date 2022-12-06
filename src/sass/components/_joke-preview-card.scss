@@ -2,15 +2,18 @@
     max-width: 600px;
     border-radius: 8px;
     padding: 19px 30px;
-    height: 1px;
+    height: max-content;
     background-color: $secondary;
     margin: 0 auto;
     min-height: 200px;
+    display: flex;
+    flex-direction: column;
 
     &-container {
         display: flex;
         flex-direction: column;
         height: 100%;
+        flex: 1;
     }
 
     &-top {
@@ -18,9 +21,16 @@
         justify-content: space-between;
     }
 
+    &-content {
+        font-size: 22px;
+        font-weight: 800;
+        color: $primary;
+    }
+
     &-bottom {
         display: flex;
         justify-content: space-between;
         margin-top: auto;
+        padding-top: 37px;
     }
 }

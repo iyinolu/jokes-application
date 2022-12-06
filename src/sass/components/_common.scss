@@ -1,3 +1,47 @@
 .main {
     margin-top: 53px;
 }
+
+.app-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-bottom: 50px;
+    justify-content: space-between;
+
+    &-right {
+        justify-self: right;
+    }
+}
+
+.app-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.jokes-nav-btn {
+    display: flex;
+    align-items: center;
+    padding: 3px 10px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    font-weight: 800;
+
+    &:hover {
+        color: $primary;
+        text-decoration: underline;
+    }
+}
+
+.prev {
+    & img {
+        margin-right: 10px;
+    }
+}
+
+.next {
+    & img {
+        margin-left: 10px;
+    }
+}

@@ -1,0 +1,19 @@
+.custom-select {
+    border: none !important;
+    height: 42px;
+    background-color: rgba(236, 236, 236, 0.42) !important;
+    border-radius: 5px;
+    padding: 10px;
+    border: 2px solid #ede9e9 !important;
+    transition: all 0.3s ease;
+
+    &:focus-visible {
+        border: 2px solid $primary !important;
+        box-shadow: 0 0 0 3px rgb(15 111 255 / 10%) !important;
+        outline-color: $primary;
+    }
+
+    &::-ms-expand {
+        display: none;
+    }
+}
