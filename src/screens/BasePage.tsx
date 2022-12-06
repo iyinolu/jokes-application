@@ -106,7 +106,7 @@ function SPA() {
             </div>
             <div className="app-toolbar-left">
               <SelectField
-                placeholder="Choose Joke Category"
+                placeholder="Choose Category"
                 options={jokeCategories}
                 onChange={onChangeCategory}
               />

@@ -4,9 +4,13 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    background-image: url(../../../public/assets/bitmap-copy.png);
+    padding: 0 26px;
 
     &-brand {
         font-size: 19px;
+        color: white;
+        font-weight: 600;
     }
 
     &-nav-container {
